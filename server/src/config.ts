@@ -12,14 +12,14 @@ const conf = convict({
         host:{
             doc: 'Database url',
             format: String,
-            default: 'localhost',
+            default: 'localhost:27017',
             env: 'DB_HOST',
             arg: 'host'
         },
         user:{
             doc: 'Database username',
             format: String,
-            default: 'charadmin',
+            default: 'char',
             env: 'DB_USER',
             arg: 'user'
         },

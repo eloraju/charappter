@@ -1,32 +1,24 @@
-# This Docker Compose file can be used to quickly bootup Dgraph Zero
-# and Alpha in different Docker containers.
+# Use root/example as user/password credentials
+version: '3.1'
 
-# It mounts /tmp/data on the host machine to /dgraph within the
-# container. You can change /tmp/data to a more appropriate location.
-# Run `docker-compose up` to start Dgraph.
 
-version: "3.2"
+volumes:
+    mongodata:
+        external: false
+
 services:
-  zero:
-    image: dgraph/dgraph:latest
+
+  mongo:
+    image: mongo:latest
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: $DB_USER
+      MONGO_INITDB_ROOT_PASSWORD: $DB_PASS
     volumes:
-      - /tmp/data:/dgraph
+        - mongodata:/tmp/mongo
     ports:
-      - 5080:5080
-      - 6080:6080
-    restart: on-failure
-    command: dgraph zero --my=zero:5080
-  alpha:
-    image: dgraph/dgraph:latest
-    volumes:
-      - /tmp/data:/dgraph
-    ports:
-      - 8080:8080
-      - 9080:9080
-    restart: on-failure
-    command: dgraph alpha --my=alpha:7080 --zero=zero:5080 --whitelist=172.20.0.1
-  ratel:
-    image: dgraph/dgraph:latest
-    ports:
-      - 8000:8000
-    command: dgraph-ratel
+        - 27017:27017
+
+  redis:
+    image: redis:alpine
+    restart: always
