@@ -7,7 +7,6 @@ describe('Database class tests', ()=> {
     let db:DB;
 
     beforeAll(async ()=>{
-        console.log(dbConf)
         db = await DB.instance(dbConf);
     })
 

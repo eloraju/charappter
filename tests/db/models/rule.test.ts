@@ -5,10 +5,10 @@ describe('Rule model tests', ()=>{
     describe('Rule validation tests', ()=>{
         test('Should pass validation', async () => {
             const testTrait: Rule = {
-                _id: new ObjectId().toHexString(),
-                target: new ObjectId().toHexString(),
-                source: new ObjectId().toHexString(),
-                multiplier: 0.5,
+                _id: new ObjectId(),
+                target: new ObjectId(),
+                source: new ObjectId(),
+                modifier: 0.5,
                 function: null,
             }
 

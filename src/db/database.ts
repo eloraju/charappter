@@ -30,7 +30,6 @@ export class DB {
     static async instance(conf: MongoConf): Promise<DB> {
         if (DB.inst.client) { return DB.inst }
 
-        console.log(conf);
         const uri = `mongodb://${conf.user}:${conf.password}@${conf.host}:${conf.port}/${conf.dbName}?`;
         
         DB.inst.client = new MongoClient(uri, {useNewUrlParser: true, useUnifiedTopology: true});
@@ -73,11 +72,6 @@ export class DB {
 //    get users(): Collection<User>{
 //        return this.getCollections<User>('users');
 //    }
-
-    async testCall(): Promise<any> {
-        console.log(this.client?.isConnected())
-        return await this.db?.listCollections().next();
-    }
 
     collections(): CharappterCollections {
         return {
