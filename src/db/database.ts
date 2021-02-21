@@ -50,6 +50,10 @@ export class DB {
         return (this.db?.collection<T>(collectionName) as Collection<T>);
     }
 
+    getDatabaseObject(): Db {
+        return this.db as Db;
+    }
+
     get traits(): Collection<Trait>{
         return this.getCollections('traits');
     }

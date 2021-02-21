@@ -10,19 +10,10 @@ export class Charappter {
     app = express();
 
     constructor(
-        public collectios: CharappterCollections,
+        public collectios?: CharappterCollections,
     ) {
         this.app.use(bodyParser.json());
         this.app.use('/api/v1', v1Router);
-
-        this.app.post("/", (_, res) => {
-            res.send('Hi POST!')
-        });
-
-        this.app.get("/", (_, res) => {
-            res.send('Hi GET!');
-        });
-        console.log(Object.keys(this.collectios))
     }
 
     postServeHook(){

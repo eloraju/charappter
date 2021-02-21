@@ -5,7 +5,7 @@ describe('Trait model tests', ()=>{
     describe('Trait validation tests', ()=>{
         test('Should pass validation validate', async () => {
             const testTrait: Trait = {
-                _id: new ObjectId().toHexString(),
+                _id: new ObjectId(),
                 name: 'TestTrait',
                 description: 'Just some text',
                 type: TraitType.Attribute
@@ -18,7 +18,7 @@ describe('Trait model tests', ()=>{
 
         test('Should allow "null" for description', async () => {
             const testTrait: Trait = {
-                _id: new ObjectId().toHexString(),
+                _id: new ObjectId(),
                 name: 'TestTrait',
                 description: null,
                 type: TraitType.Attribute

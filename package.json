@@ -9,7 +9,8 @@
         "db:stop": "docker-compose -f ./docker/docker-compose.yml down",
         "coverage": "xdg-open ./coverage/index.html",
         "start:dev": "ts-node src/server.ts",
-        "test": "DB_PASS=test DB_USER=test DB_NAME=test jest -w 6"
+        "test": "DB_PASS=test DB_USER=test DB_NAME=test jest -w 6 --config jest.config.ts",
+        "test:coverage": "DB_PASS=test DB_USER=test DB_NAME=test jest -w 6 --config jest.config.coverage.ts"
     },
     "author": "Juuso Elo-Rauta",
     "license": "ISC",
@@ -36,45 +37,5 @@
         "joi": "^17.4.0",
         "lodash": "^4.17.20",
         "mongodb": "^3.6.4"
-    },
-    "jest": {
-        "moduleFileExtensions": [
-            "js",
-            "jsx",
-            "json",
-            "ts",
-            "tsx"
-        ],
-        "collectCoverage": true,
-        "coverageDirectory": "coverage",
-        "collectCoverageFrom": [
-            "**/src/**/*.{ts,js}",
-            "!**/node_modules/**",
-            "!**/build/**",
-            "!**/coverage/**"
-        ],
-        "coverageThreshold": {
-            "global": {
-                "branches": 100,
-                "functions": 100,
-                "lines": 100,
-                "statements": 100
-            }
-        },
-        "coverageReporters": [
-            "text-summary",
-            "html",
-            "json"
-        ],
-        "transform": {
-            "\\.ts$": "ts-jest"
-        },
-        "testRegex": "(/tests/.*\\.test)\\.ts$",
-        "testPathIgnorePatterns": [
-            "/node_modules/",
-            "/build/",
-            "/coverage/",
-            ".*/config.ts"
-        ]
     }
 }

@@ -1,8 +1,9 @@
 import joi, {CustomHelpers} from 'joi'
 import {ObjectId} from 'mongodb'
 
-export const ObjectIdValidator = joi.custom((objectId: ObjectId|string, helpers: CustomHelpers) => {
-    const idAsString = objectId instanceof ObjectId ?  objectId.toHexString() : objectId.toString();
+export const ObjectIdValidator = joi.custom((id: ObjectId, helpers: CustomHelpers) => {
+    if (!(id instanceof ObjectId)) { return helpers.error('Provided value is not an ObjectId'); }
+    const idAsString = id.toHexString();
 
     const result = /^[a-f0-9]{24}$/.exec(idAsString);
 
@@ -10,13 +11,17 @@ export const ObjectIdValidator = joi.custom((objectId: ObjectId|string, helpers:
         return helpers.error('input is not a valid ObjectId')
     }
 
-    return objectId;
+    return id;
+});
 
-})
+export interface BelongsToGame {
+    game: ObjectId;
+}
 
 export interface DBDocument {
     _id: ObjectId;
-//    created: number;
-//    updated: number;
+    created?: number;
+    updated?: number;
+    removed?: boolean;
 //    creator: ObjectId;
 }

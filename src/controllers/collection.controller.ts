@@ -1,5 +1,5 @@
 import {Schema} from 'joi'
-import {Collection, ObjectId} from 'mongodb'
+import {Collection, ObjectId, OptionalId} from 'mongodb'
 import {DBDocument, ObjectIdValidator} from '../db/models/shared';
 
 export abstract class CollectionController<T extends DBDocument> {
@@ -8,9 +8,7 @@ export abstract class CollectionController<T extends DBDocument> {
         private addValidator: Schema,
         private editValidator: Schema,
         private controllerName: string
-    ) {
-        this.db = db;
-    }
+    ) {}
 
     private validate(args: any, validator: Schema) {
         // This will throw if the validation fails.
@@ -25,55 +23,57 @@ export abstract class CollectionController<T extends DBDocument> {
         throw new Error(`[${this.controllerName}] ${error}: ${message}`);
     }
 
-    async add(addArgs: Omit<T, '_id'>): Promise<T> {
+    async add(addArgs: OptionalId<T>): Promise<T> {
         this.validate(addArgs, this.addValidator);
 
-        const newObject: any = {
+        const newObject = {
             ...addArgs,
+            created: Date.now(),
+            updated: Date.now(),
+            removed: false
         }
 
         const res = await this.db.insertOne(newObject);
-        return {
-            ...newObject,
-            _id: res.insertedId
-        };
+
+        if (!res.result.ok) {this.throwError('BlackMagicError', 'Inserting to database failed.')}
+
+        return res.ops[0] as T;
     }
 
-    async remove(id: string): Promise<boolean> {
-        this.validate(id, ObjectIdValidator);
-        const query: any = {
-                _id: new ObjectId(id)
-        }
-
-        const res = await this.db.deleteOne(query);
-        return res.deletedCount === 1;
+    async remove(_id: ObjectId): Promise<boolean> {
+        this.validate(_id, ObjectIdValidator);
+        await this.edit({_id} as any, true);
+        return true;
     }
 
-    async edit(editArgs: T): Promise<T> {
+    async edit(editArgs: Partial<T>, remove: boolean = false): Promise<T> {
         this.validate(editArgs, this.editValidator);
         const query:any = {
             _id: new ObjectId(editArgs._id)
-        }
-        const toUpdate =await this.db.findOne(query)
+        };
+
+        const toUpdate = await this.db.findOne(query);
         if (!toUpdate) { this.throwError('ObjectNotFound', 'Coulnd not find object to update. Does it exists?') };
 
         const updateQuery = {
             $set:{
                 ...toUpdate,
-                ...editArgs
+                ...editArgs,
+                updated: Date.now(),
+                removed: remove
             }
-        }
+        };
 
         const result = await this.db.updateOne(query,updateQuery);
-        if (result.modifiedCount === 0) { this.throwError('BlackMagicError', 'For some reason update was not successful.')}
+        if (!result.result.ok) { this.throwError('BlackMagicError', 'For some reason update was not successful.')}
 
-        return {...updateQuery.$set};
+        return updateQuery.$set as T;
     }
 
-    async view(id: string): Promise<T>{
+    async view(id: ObjectId): Promise<T>{
         this.validate(id, ObjectIdValidator);
         const query: any = {
-            _id: new ObjectId(id),
+            _id: id,
         }
         const result = await this.db.findOne(query);
         if (!result) { this.throwError('ObjectNotFound', 'Object does not exist')}
@@ -81,6 +81,6 @@ export abstract class CollectionController<T extends DBDocument> {
     }
 
     async all(): Promise<T[]>{
-        return this.db.find().toArray();
+        return this.db.find({removed: false} as any).toArray();
     }
 }
