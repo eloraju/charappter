@@ -8,7 +8,7 @@
         "db:start": "DB_USER=dev DB_PASS=development docker-compose -f ./docker/docker-compose.yml up -d --remove-orphans",
         "db:stop": "docker-compose -f ./docker/docker-compose.yml down",
         "coverage": "xdg-open ./coverage/index.html",
-        "start:dev": "ts-node src/main.ts",
+        "start:dev": "ts-node src/server.ts",
         "test": "DB_PASS=test DB_USER=test DB_NAME=test jest -w 6"
     },
     "author": "Juuso Elo-Rauta",

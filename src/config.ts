@@ -1,12 +1,21 @@
 import convict from 'convict';
 
 const conf = convict({
-    port: {
-        doc: '',
-        format: 'port',
-        default: 1339,
-        env: 'PORT',
-        arg: 'port'
+    server: {
+        host:{
+            doc: 'Database url',
+            format: String,
+            default: 'localhost',
+            env: 'HOST',
+            arg: 'host'
+        },
+        port: {
+            doc: '',
+            format: 'port',
+            default: 1339,
+            env: 'PORT',
+            arg: 'port'
+        }
     },
     db: {
         host:{

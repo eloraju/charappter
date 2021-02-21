@@ -10,6 +10,14 @@ export interface MongoConf {
     dbName: string;
 }
 
+export interface CharappterCollections {
+    traits: Collection<Trait>;
+    rules: Collection<Rule>;
+//    games: Collection<Game>;
+//    characters: Collection<Character>;
+//    users: Collection<User>;
+}
+
 
 export class DB {
     private static inst: DB = new DB();
@@ -22,6 +30,7 @@ export class DB {
     static async instance(conf: MongoConf): Promise<DB> {
         if (DB.inst.client) { return DB.inst }
 
+        console.log(conf);
         const uri = `mongodb://${conf.user}:${conf.password}@${conf.host}:${conf.port}/${conf.dbName}?`;
         
         DB.inst.client = new MongoClient(uri, {useNewUrlParser: true, useUnifiedTopology: true});
@@ -41,17 +50,40 @@ export class DB {
         return (this.db?.collection<T>(collectionName) as Collection<T>);
     }
 
-    get traits(): Collection<Trait> | null {
+    get traits(): Collection<Trait>{
         return this.getCollections('traits');
     }
 
-    get rules(): Collection<Rule> | null {
+    get rules(): Collection<Rule>{
         return this.getCollections<Rule>('rules');
     }
+
+//    get characters(): Collection<Character>{
+//        return this.getCollections<Character>('characters');
+//    }
+//
+//    get games(): Collection<Game>{
+//        return this.getCollections<Game>('games');
+//    }
+//
+//    get users(): Collection<User>{
+//        return this.getCollections<User>('users');
+//    }
 
     async testCall(): Promise<any> {
         console.log(this.client?.isConnected())
         return await this.db?.listCollections().next();
+    }
+
+    collections(): CharappterCollections {
+        return {
+            traits: this.traits,
+            rules: this.rules,
+//            games: this.games,
+//            characters: this.characters,
+//            users : this.users,
+
+        }
     }
 
 }

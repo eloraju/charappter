@@ -1,7 +1,12 @@
-import app from '../src/app';
+import {Charappter} from '../src/app';
 import request from 'supertest';
 
 describe('Inital tests', ()=>{
+    let app;
+    let charappter: Charappter;
+    beforeAll(()=>{
+    });
+
     test('GET "/" should return 200', async () => {
         await request(app)
         .get("/")

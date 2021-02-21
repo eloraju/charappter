@@ -1,5 +1,5 @@
 print('######################## Running init script ########################')
-const collections = ['traits', 'rules']
+const collections = ['traits', 'rules', 'characters', 'games', 'users', 'items']
 
 db = db.getSiblingDB("dev")
 print('Creating development database')
