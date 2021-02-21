@@ -1,7 +1,6 @@
 # Use root/example as user/password credentials
 version: '3.1'
 
-
 volumes:
     mongodata:
         external: false
@@ -9,6 +8,7 @@ volumes:
 services:
 
   mongo:
+    container_name: mongodb
     image: mongo:latest
     restart: always
     environment:
@@ -16,9 +16,11 @@ services:
       MONGO_INITDB_ROOT_PASSWORD: $DB_PASS
     volumes:
         - mongodata:/tmp/mongo
+        - ./mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
     ports:
         - 27017:27017
 
   redis:
+    container_name: redisdb
     image: redis:alpine
     restart: always

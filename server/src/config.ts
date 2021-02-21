@@ -12,23 +12,37 @@ const conf = convict({
         host:{
             doc: 'Database url',
             format: String,
-            default: 'localhost:27017',
+            default: 'localhost',
             env: 'DB_HOST',
-            arg: 'host'
+            arg: 'db-host'
+        },
+        port:{
+            doc: 'Database port',
+            format: Number,
+            default: 27017,
+            env: 'DB_PORT',
+            arg: 'db-port'
         },
         user:{
             doc: 'Database username',
             format: String,
-            default: 'char',
+            default: 'dev',
             env: 'DB_USER',
-            arg: 'user'
+            arg: 'db-user'
         },
-        pswd:{
+        password:{
             doc: 'Database password',
             format: String,
             default: 'password',
             env: 'DB_PASS',
-            arg: 'pass'
+            arg: 'db-pass'
+        },
+        dbName: {
+            doc: 'Database default database name',
+            format: String,
+            default: 'dev',
+            env: 'DB_NAME',
+            arg: 'db-name'
         }
     }
 });
