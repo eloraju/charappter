@@ -1,4 +1,4 @@
-import {DBDocument, ObjectIdValidator} from './shared';
+import {DBDocument, ModelValidators, ObjectIdValidator} from './shared.model';
 import joi from 'joi';
 import {ObjectId} from 'mongodb';
 
@@ -36,4 +36,8 @@ export const EditTraitValidator = joi.object({
     type: joi.string().allow(...Object.values(TraitType))
 });
 
-
+export const TraitValidators: ModelValidators = {
+    main: TraitValidator,
+    add: AddTraitValidator,
+    edit: EditTraitValidator
+}

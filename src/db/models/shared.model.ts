@@ -28,3 +28,9 @@ export interface DBDocument {
     removed?: boolean;
 //    creator: ObjectId;
 }
+
+export interface ModelValidators {
+    main: joi.Schema;
+    add: joi.Schema;
+    edit: joi.Schema;
+}

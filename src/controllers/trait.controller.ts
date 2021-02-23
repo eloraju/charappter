@@ -1,9 +1,11 @@
 import {Collection} from "mongodb";
-import {CollectionController} from "../db/models/shared";
-import {AddTraitValidator, EditTraitValidator, Trait} from "../db/models/trait";
+import {Trait, TraitValidators} from "../db/models/trait";
+import {CollectionController} from "./collection.controller";
 
 export class TraitController extends CollectionController<Trait>{
     constructor(db: Collection<Trait>) {
-        super(db, AddTraitValidator, EditTraitValidator, 'TraitController');
+        super(db, TraitValidators, 'TraitController');
     }
+
+    // Space for custom functions
 }

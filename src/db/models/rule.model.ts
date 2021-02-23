@@ -1,4 +1,4 @@
-import {DBDocument, ObjectIdValidator} from './shared';
+import {DBDocument, ModelValidators, ObjectIdValidator} from './shared';
 import joi from 'joi';
 import {ObjectId} from 'mongodb';
 
@@ -31,3 +31,9 @@ export const EditRuleValidator = joi.object({
     modifier: joi.number().strict(true).default(0),
     function: joi.string().allow(null)
 });
+
+export const RuleValidators: ModelValidators = {
+    main: RuleValidator,
+    add: AddRuleValidator,
+    edit: EditRuleValidator
+}

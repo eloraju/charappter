@@ -1,16 +1,15 @@
 import {Schema} from 'joi'
 import {Collection, ObjectId, OptionalId} from 'mongodb'
-import {DBDocument, ObjectIdValidator} from '../db/models/shared';
+import {DBDocument, ModelValidators, ObjectIdValidator} from '../db/models/shared';
 
 export abstract class CollectionController<T extends DBDocument> {
     constructor (
         protected db: Collection<T>, 
-        private addValidator: Schema,
-        private editValidator: Schema,
+        protected validators: ModelValidators,
         private controllerName: string
     ) {}
 
-    private validate(args: any, validator: Schema) {
+    protected validate(args: any, validator: Schema) {
         // This will throw if the validation fails.
         // Not 100% sure whether this is a good idea or not
         const res = validator.validate(args);
@@ -19,12 +18,12 @@ export abstract class CollectionController<T extends DBDocument> {
         }
     }
 
-    private throwError(error: string, message: string) {
+    protected throwError(error: string, message: string) {
         throw new Error(`[${this.controllerName}] ${error}: ${message}`);
     }
 
-    async add(addArgs: OptionalId<T>): Promise<T> {
-        this.validate(addArgs, this.addValidator);
+    async create(addArgs: OptionalId<T>): Promise<T> {
+        this.validate(addArgs, this.validators.add);
 
         const newObject = {
             ...addArgs,
@@ -40,14 +39,20 @@ export abstract class CollectionController<T extends DBDocument> {
         return res.ops[0] as T;
     }
 
-    async remove(_id: ObjectId): Promise<boolean> {
+    async createMany(addArgs: OptionalId<T>[]): Promise<T[]> {
+    }
+
+    async delete(_id: ObjectId): Promise<boolean> {
         this.validate(_id, ObjectIdValidator);
         await this.edit({_id} as any, true);
         return true;
     }
 
-    async edit(editArgs: Partial<T>, remove: boolean = false): Promise<T> {
-        this.validate(editArgs, this.editValidator);
+    async deleteMany(ids: ObjectId[]): Promise<boolean[]> {
+    }
+
+    async update(editArgs: Partial<T>, remove: boolean = false): Promise<T> {
+        this.validate(editArgs, this.validators.edit);
         const query:any = {
             _id: new ObjectId(editArgs._id)
         };
@@ -70,14 +75,21 @@ export abstract class CollectionController<T extends DBDocument> {
         return updateQuery.$set as T;
     }
 
-    async view(id: ObjectId): Promise<T>{
+    async find(id: ObjectId): Promise<T|null>{
         this.validate(id, ObjectIdValidator);
         const query: any = {
             _id: id,
         }
-        const result = await this.db.findOne(query);
-        if (!result) { this.throwError('ObjectNotFound', 'Object does not exist')}
-        return result as T;
+
+        return await this.db.findOne(query);
+    }
+
+    async findMany(ids: ObjectId[]): Promise<T[]> {
+        ids.forEach(id => ObjectIdValidator.validate(id));
+
+        const query: any = {
+            $
+        }
     }
 
     async all(): Promise<T[]>{
