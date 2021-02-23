@@ -1,4 +1,4 @@
-import {Schema} from 'joi'
+import {Schema} from 'joi';
 import {Collection, ObjectId, OptionalId} from 'mongodb'
 import {DBDocument, ModelValidators, ObjectIdValidator} from '../db/models/shared.model';
 

@@ -22,7 +22,8 @@ export function createControllers(db: DB): Controllers {
     }
 }
 
-
+// These can be moved to their own files once they grow a bit larger
+//
 export class TraitController extends CollectionController<Trait>{
     constructor(db: Collection<Trait>) {
         super(db, TraitValidators, 'TraitController');

@@ -12,7 +12,7 @@ DB.instance(config.get('db')).then( db => {
 
     const { traits, rules, items, characters } = createControllers(db);
 
-    app.listen(serverConf.port, ()=>{
+    app.listen(serverConf.port, () => {
         console.log(`Server running at port ${serverConf.port}`);
     });
 });
