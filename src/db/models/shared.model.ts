@@ -17,6 +17,10 @@ export const ObjectIdValidator = joi.custom((id: ObjectId, helpers: CustomHelper
     'any.custom.1':'input is not a valid ObjectId'
 });
 
+export const ObjectIdStringValidator = joi.string().regex(/^[a-f0-9]{24}$/);
+export const RelationNumberValidator = joi.object().pattern(ObjectIdStringValidator, joi.number().strict(true).default(0));
+
+
 export interface BelongsToGame {
     game: ObjectId;
 }

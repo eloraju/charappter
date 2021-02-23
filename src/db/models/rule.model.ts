@@ -1,4 +1,4 @@
-import {DBDocument, ModelValidators, ObjectIdValidator} from './shared';
+import {DBDocument, ModelValidators, ObjectIdValidator} from './shared.model';
 import joi from 'joi';
 import {ObjectId} from 'mongodb';
 

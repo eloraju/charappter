@@ -1,6 +1,8 @@
 import {Collection, Db, MongoClient} from 'mongodb';
-import {Rule} from './models/rule';
-import {Trait} from './models/trait';
+import {Character} from './models/character.model';
+import {Item} from './models/item.model';
+import {Rule} from './models/rule.model';
+import {Trait} from './models/trait.model';
 
 export interface MongoConf {
     host: string;
@@ -13,8 +15,8 @@ export interface MongoConf {
 export interface CharappterCollections {
     traits: Collection<Trait>;
     rules: Collection<Rule>;
-//    games: Collection<Game>;
-//    characters: Collection<Character>;
+    items: Collection<Item>;
+    characters: Collection<Character>;
 //    users: Collection<User>;
 }
 
@@ -61,13 +63,13 @@ export class DB {
         return this.getCollections<Rule>('rules');
     }
 
-//    get characters(): Collection<Character>{
-//        return this.getCollections<Character>('characters');
-//    }
-//
-//    get games(): Collection<Game>{
-//        return this.getCollections<Game>('games');
-//    }
+    get characters(): Collection<Character>{
+        return this.getCollections<Character>('characters');
+    }
+
+    get items(): Collection<Item>{
+        return this.getCollections<Item>('items');
+    }
 //
 //    get users(): Collection<User>{
 //        return this.getCollections<User>('users');
@@ -77,8 +79,8 @@ export class DB {
         return {
             traits: this.traits,
             rules: this.rules,
-//            games: this.games,
-//            characters: this.characters,
+            items: this.items,
+            characters: this.characters,
 //            users : this.users,
 
         }

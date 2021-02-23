@@ -1,6 +1,6 @@
 import {Schema} from 'joi'
 import {Collection, ObjectId, OptionalId} from 'mongodb'
-import {DBDocument, ModelValidators, ObjectIdValidator} from '../db/models/shared';
+import {DBDocument, ModelValidators, ObjectIdValidator} from '../db/models/shared.model';
 
 export abstract class CollectionController<T extends DBDocument> {
     constructor (
@@ -39,16 +39,10 @@ export abstract class CollectionController<T extends DBDocument> {
         return res.ops[0] as T;
     }
 
-    async createMany(addArgs: OptionalId<T>[]): Promise<T[]> {
-    }
-
     async delete(_id: ObjectId): Promise<boolean> {
         this.validate(_id, ObjectIdValidator);
-        await this.edit({_id} as any, true);
+        await this.update({_id} as any, true);
         return true;
-    }
-
-    async deleteMany(ids: ObjectId[]): Promise<boolean[]> {
     }
 
     async update(editArgs: Partial<T>, remove: boolean = false): Promise<T> {
@@ -84,15 +78,7 @@ export abstract class CollectionController<T extends DBDocument> {
         return await this.db.findOne(query);
     }
 
-    async findMany(ids: ObjectId[]): Promise<T[]> {
-        ids.forEach(id => ObjectIdValidator.validate(id));
-
-        const query: any = {
-            $
-        }
-    }
-
-    async all(): Promise<T[]>{
+    async listAll(): Promise<T[]>{
         return this.db.find({removed: false} as any).toArray();
     }
 }
