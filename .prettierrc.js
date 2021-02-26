@@ -1,5 +1,5 @@
-const rules = {
-    singleQuote: true,
-    tabWidth: 2,
-}
-export default rules;
+module.exports = {
+  singleQuote: true,
+  tabWidth: 2,
+  trailingComma: "none"
+};

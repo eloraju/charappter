@@ -5,6 +5,7 @@
     "main": "index.js",
     "scripts": {
         "build": "tsc",
+        "lint": "eslint . --ext .ts",
         "db:start": "DB_USER=dev DB_PASS=development docker-compose -f ./docker/docker-compose.yml up -d --remove-orphans",
         "db:stop": "docker-compose -f ./docker/docker-compose.yml down",
         "coverage": "xdg-open ./coverage/index.html",
@@ -29,6 +30,7 @@
         "eslint-config-prettier": "^8.0.0",
         "eslint-plugin-jest": "^24.1.5",
         "eslint-plugin-node": "^11.1.0",
+        "eslint-plugin-prettier": "^3.3.1",
         "jest": "^26.6.3",
         "prettier": "^2.2.1",
         "supertest": "^6.1.3",

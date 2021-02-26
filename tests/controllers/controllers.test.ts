@@ -1,23 +1,59 @@
-import {DB} from '../../src/db/database';
+import { DB } from '../../src/db/database';
 import config from '../../src/config';
-import {createControllers} from '../../src/controllers/controllers';
+import { createControllers } from '../../src/controllers/controllers';
+import { Trait } from '../../src/db/models/trait.model';
+import { CollectionController } from '../../src/controllers/collection.controller';
+import { Character } from '../../src/db/models/character.model';
+import { Item } from '../../src/db/models/item.model';
+import { Rule } from '../../src/db/models/rule.model';
 
 describe('Test that the controller creation function works', () => {
-    let db: DB;
-    beforeAll(async ()=>{
-        db = await DB.instance(config.get('db'));
-    });
+  let db: DB;
+  beforeAll(async () => {
+    db = await DB.instance(config.get('db'));
+  });
 
-    afterAll(async ()=>{
-        DB.closeDB();
-    });
+  afterAll(async () => {
+    DB.closeDB();
+  });
 
-    test('Should create a controllers', () => {
-        const {traits, items, rules, characters} = createControllers(db);
+  let traits: CollectionController<Trait>;
+  let items: CollectionController<Item>;
+  let rules: CollectionController<Rule>;
+  let characters: CollectionController<Character>;
 
-        expect(traits).toBeTruthy();
-        expect(items).toBeTruthy();
-        expect(rules).toBeTruthy();
-        expect(characters).toBeTruthy();
+  test('Should create all controllers', async () => {
+    const controllers = createControllers(db);
+    traits = controllers.traits;
+    items = controllers.items;
+    rules = controllers.rules;
+    characters = controllers.characters;
+
+    expect(traits).toBeTruthy();
+    expect(items).toBeTruthy();
+    expect(rules).toBeTruthy();
+    expect(characters).toBeTruthy();
+  });
+
+  // Everything below this point will be moved to it's own file at some point
+
+  describe('Trait controller tests', () => {
+    test('Should create a trait', async () => {
+      const newTrait = await traits.create({
+        name: 'test'
+      });
     });
+  });
+
+  describe('Item controller tests', () => {
+    console.log('asd');
+  });
+
+  describe('Rule controller tests', () => {
+    console.log('asd');
+  });
+
+  describe('Character controller tests', () => {
+    console.log('asd');
+  });
 });
