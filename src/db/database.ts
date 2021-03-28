@@ -26,6 +26,7 @@ export class DB {
   private db: Db | null = null;
   static connected = false;
 
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
   private constructor() {}
 
   static async instance(conf: MongoConf): Promise<DB> {
@@ -45,7 +46,9 @@ export class DB {
     return DB.inst;
   }
 
-  static closeDB() {
+
+
+  static closeDB(): void {
     DB.inst.client?.close();
     DB.connected = !!DB.inst.client?.isConnected();
   }

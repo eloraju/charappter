@@ -11,7 +11,8 @@ const config: Config.InitialOptions = {
     '/build/',
     '/coverage/',
     '.*/config.ts'
-  ]
+  ],
+  preset: '@shelf/jest-mongodb'
 };
 
 export default config;

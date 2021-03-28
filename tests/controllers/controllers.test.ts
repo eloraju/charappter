@@ -1,20 +1,22 @@
-import { DB } from '../../src/db/database';
-import config from '../../src/config';
 import { createControllers } from '../../src/controllers/controllers';
 import { Trait } from '../../src/db/models/trait.model';
 import { CollectionController } from '../../src/controllers/collection.controller';
 import { Character } from '../../src/db/models/character.model';
 import { Item } from '../../src/db/models/item.model';
 import { Rule } from '../../src/db/models/rule.model';
+import { Db, MongoClient } from 'mongodb';
+import { openTestDB } from '../helpers/helperFunctions';
 
 describe('Test that the controller creation function works', () => {
-  let db: DB;
+  let mongoClient: MongoClient;
+  let db: Db;
   beforeAll(async () => {
-    db = await DB.instance(config.get('db'));
+    mongoClient = await openTestDB();
+    db = mongoClient.db();
   });
 
   afterAll(async () => {
-    DB.closeDB();
+    mongoClient.close();
   });
 
   let traits: CollectionController<Trait>;
@@ -37,13 +39,7 @@ describe('Test that the controller creation function works', () => {
 
   // Everything below this point will be moved to it's own file at some point
 
-  describe('Trait controller tests', () => {
-    test('Should create a trait', async () => {
-      const newTrait = await traits.create({
-        name: 'test'
-      });
-    });
-  });
+  describe('Trait controller tests', () => {});
 
   describe('Item controller tests', () => {
     console.log('asd');

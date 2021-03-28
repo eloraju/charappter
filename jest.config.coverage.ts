@@ -28,7 +28,8 @@ const config: Config.InitialOptions = {
       statements: 100
     }
   },
-  coverageReporters: ['text-summary', 'html', 'json']
+  coverageReporters: ['text-summary', 'html', 'json'],
+  preset: '@shelf/jest-mongodb'
 };
 
 export default config;

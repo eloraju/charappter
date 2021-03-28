@@ -6,7 +6,7 @@ export enum TraitType {
   Attribute = 'attribute',
   Skill = 'skill',
   Feat = 'feat',
-  Point = 'point'
+  Pool = 'pool'
 }
 
 export interface Trait extends DBDocument {
