@@ -6,21 +6,20 @@ volumes:
         external: false
 
 services:
+    mongo:
+        container_name: mongodb
+        image: mongo:latest
+        restart: always
+        environment:
+            MONGO_INITDB_ROOT_USERNAME: $DB_USER
+            MONGO_INITDB_ROOT_PASSWORD: $DB_PASS
+        volumes:
+            - mongodata:/tmp/mongo
+            - ./mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
+        ports:
+            - 27017:27017
 
-  mongo:
-    container_name: mongodb
-    image: mongo:latest
-    restart: always
-    environment:
-      MONGO_INITDB_ROOT_USERNAME: $DB_USER
-      MONGO_INITDB_ROOT_PASSWORD: $DB_PASS
-    volumes:
-        - mongodata:/tmp/mongo
-        - ./mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
-    ports:
-        - 27017:27017
-
-  redis:
-    container_name: redisdb
-    image: redis:alpine
-    restart: always
+    redis:
+        container_name: redisdb
+        image: redis:alpine
+        restart: always
